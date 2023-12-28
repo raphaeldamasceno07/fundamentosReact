@@ -1,7 +1,6 @@
 import React from "react";
+import "./styles/global.css"
 
 export function App() {
-  throw new Error("erro a ser mostrado")
-  
   return <h1>Hello React</h1>;
 }
