@@ -2,8 +2,12 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
+const isDevelopment = process.env.NODE_ENV !== "PRODUCTION";
+
 module.exports = {
-  mode: "development",
+  mode: isDevelopment ? "development" : 'production',
+  //mostrar no lugar exato onde o erro se encontra.
+  devtool: isDevelopment ? "eval-source-map" : "source-map",
   // arquivo de entrada
   entry: path.resolve(__dirname, "src", "index.jsx"),
   //arquivo a ser gerado
