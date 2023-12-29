@@ -1,5 +1,6 @@
 //para ficar o mesmo caminho seja no linux ou windows
 const path = require("path");
+const reactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV !== "PRODUCTION";
@@ -21,26 +22,34 @@ module.exports = {
   devServer: {
     static: {
       directory: path.resolve(__dirname, "app"),
-    },
+    }
   },
   plugins: [
+    isDevelopment && new reactRefreshWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "public", "index.html"),
     }),
-  ],
+  ].filter(Boolean),
   module: {
     rules: [
       {
         test: /\.jsx$/,
         exclude: /node_modules/,
-        use: "babel-loader",
+        use: {
+          loader: "babel-loader",
+          options: {
+            plugins: [
+              isDevelopment && require.resolve("react-refresh/babel")
+            ].filter(Boolean)
+          }
+        }
       },
       {
         test: /\.scss$/,
         exclude: /node_modules/,
         use: ["style-loader", "css-loader", "sass-loader"],
       },
-      
+
     ],
   },
 };
